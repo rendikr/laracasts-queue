@@ -1,5 +1,7 @@
 <?php
 
+use App\Jobs\ReconcileAccount;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,9 +14,9 @@
 */
 
 Route::get('/', function () {
-    dispatch(function () {
-        logger('Hello There');
-    })->delay(now()->addMinutes(2));
+    $user = App\User::first();
+
+    dispatch(new ReconcileAccount($user));
 
     return 'Finished';
 });
