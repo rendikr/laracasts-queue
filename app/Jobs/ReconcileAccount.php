@@ -23,7 +23,7 @@ class ReconcileAccount implements ShouldQueue
      */
     public function __construct(User $user)
     {
-      $this->user = $user;
+        $this->user = $user;
     }
 
     /**
@@ -33,7 +33,8 @@ class ReconcileAccount implements ShouldQueue
      */
     public function handle(Filesystem $file)
     {
-        $file->put(public_path('testing.text'), 'Reconciling the user: ' . $this->user->name);
-        logger('Reconciling the user: ' . $this->user->name);
+        $message = 'Reconciling the user: ' . $this->user->name;
+        $file->put(public_path('testing.text'), $message);
+        logger($message);
     }
 }
