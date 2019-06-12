@@ -1,6 +1,6 @@
 <?php
 
-use App\Jobs\ReconcileAccount;
+use Illuminate\Pipeline\Pipeline;
 
 /*
 |--------------------------------------------------------------------------
@@ -11,14 +11,27 @@ use App\Jobs\ReconcileAccount;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
 Route::get('/', function () {
-    $user = App\User::first();
+    $pipeline = app(Pipeline::class);
 
-    // dispatch(new ReconcileAccount($user));
+    $pipeline->send('hello cruel world')
+        ->through([
+            function ($string, $next) {
+                $string = ucwords($string);
 
-    ReconcileAccount::dispatch($user)->onQueue('high');
+                return $next($string);
+            },
+            function ($string, $next) {
+                $string = str_ireplace('cruel', '', $string);
 
-    return 'Finished';
+                return $next($string);
+            }
+        ])
+        ->then(function ($string) {
+            dump($string);
+        });
+
+    return 'Done';
 });

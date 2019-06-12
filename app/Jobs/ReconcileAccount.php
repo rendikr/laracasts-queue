@@ -14,16 +14,14 @@ class ReconcileAccount implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $user;
-
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct()
     {
-        $this->user = $user;
+        //
     }
 
     /**
@@ -31,10 +29,8 @@ class ReconcileAccount implements ShouldQueue
      *
      * @return void
      */
-    public function handle(Filesystem $file)
+    public function handle()
     {
-        $message = 'Reconciling the user: ' . $this->user->name;
-        $file->put(public_path('testing.text'), $message);
-        logger($message);
+        //
     }
 }
